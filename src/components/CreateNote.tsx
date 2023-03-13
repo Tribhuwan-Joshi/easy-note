@@ -1,6 +1,7 @@
-import {InputBase,Box,Button,styled} from "@mui/material"
-import {useState} from "react"
-import { NoteObject } from "../models/note"
+import { InputBase, Box, Button, styled, Typography } from "@mui/material";
+import { useState } from "react";
+import { v4 as uuid } from "uuid";
+import { NoteObject } from "../models/note";
 const Container = styled(Box)`
 & > * {
     margin: 20px 20px 20px 0;
@@ -26,34 +27,63 @@ const Container = styled(Box)`
 
 }
 
-`
+`;
+const Error = styled(Typography)`
+  background: red;
+  color: white;
+  width: 40%;
+  padding: 10px;
+`;
 const defaultObj = {
-    id:0,
-    title:'',
-    details : '',
-    color : '',
-    date: (new Date().toLocaleString()).toString(),
-}
+    id: 0,
+    title: "",
+    details: "",
+    color: "",
+    date: new Date().toLocaleString().toString(),
+};
 
-
-function CreateNote() {
-
-    const [note,setNote] = useState<NoteObject>(defaultObj);
+function CreateNote({ addNotes }: { addNotes: (note: NoteObject) => void }) {
+    const [note, setNote] = useState<NoteObject>(defaultObj);
+    const [error, setError] = useState("");
     const onValueChange = (
-      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
-setNote({...note , [e.target.name] : e.target.value.trim()})
+        if(error){
+            setError("")
+        }
+        setNote({ ...note, [e.target.name]: e.target.value.trim() });
     };
-  return (
-    <Container>
-      <InputBase onChange={onValueChange} name="title" placeholder="Title" />
-      <Box component="span">30</Box>
-      <InputBase onChange={onValueChange} name="details" placeholder="Details" />
-      <Box component="span">50</Box>
-      <InputBase onChange={onValueChange} name="color"  type="color" defaultValue={"#F5F5F5"} />
-      <Button variant="outlined">Create Note</Button>
-    </Container>
-  );
+
+    function onCreateNote() {
+        if (!note.title && !note.details) {
+            setError("All fields are mandatory");
+            return;
+        }
+        addNotes({ ...note, id: uuid() });
+        setNote(defaultObj);
+    }
+    return (
+        <Container>
+            <InputBase onChange={onValueChange}  name="title" placeholder="Title" />
+            <Box component="span">30</Box>
+            <InputBase
+                onChange={onValueChange}
+                name="details"
+                placeholder="Details"
+            />
+            <Box component="span">50</Box>
+            <InputBase
+                onChange={onValueChange}
+                name="color"
+                type="color"
+                defaultValue={"#F5F5F5"}
+            />
+            <Button variant="outlined" onClick={onCreateNote}>
+                Create Note
+            </Button>
+            {error && <Error>{error}</Error>}
+        </Container>
+    );
 }
 
-export default CreateNote
+export default CreateNote;
