@@ -52,7 +52,7 @@ function CreateNote({ addNotes }: { addNotes: (note: NoteObject) => void }) {
         if(error){
             setError("")
         }
-        setNote({ ...note, [e.target.name]: e.target.value.trim() });
+        setNote({ ...note, [e.target.name]: e.target.value });
     };
 
     function onCreateNote() {
