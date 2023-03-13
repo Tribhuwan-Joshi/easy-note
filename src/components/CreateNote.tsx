@@ -1,5 +1,6 @@
 import {InputBase,Box,Button,styled} from "@mui/material"
-
+import {useState} from "react"
+import { NoteObject } from "../models/note"
 const Container = styled(Box)`
 & > * {
     margin: 20px 20px 20px 0;
@@ -26,14 +27,30 @@ const Container = styled(Box)`
 }
 
 `
+const defaultObj = {
+    id:0,
+    title:'',
+    details : '',
+    color : '',
+    date: (new Date().toLocaleString()).toString(),
+}
+
+
 function CreateNote() {
+
+    const [note,setNote] = useState<NoteObject>(defaultObj);
+    const onValueChange = (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+setNote({...note , [e.target.name] : e.target.value.trim()})
+    };
   return (
     <Container>
-      <InputBase placeholder="Title" />
+      <InputBase onChange={onValueChange} name="title" placeholder="Title" />
       <Box component="span">30</Box>
-      <InputBase placeholder="Details" />
+      <InputBase onChange={onValueChange} name="details" placeholder="Details" />
       <Box component="span">50</Box>
-      <InputBase type="color" defaultValue={"#F5F5F5"} />
+      <InputBase onChange={onValueChange} name="color"  type="color" defaultValue={"#F5F5F5"} />
       <Button variant="outlined">Create Note</Button>
     </Container>
   );
