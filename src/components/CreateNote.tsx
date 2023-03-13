@@ -1,6 +1,7 @@
 import { InputBase, Box, Button, styled, Typography } from "@mui/material";
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
+import { DETAILS_LIMIT, TITLE_LIMIT } from "../constants/constant";
 import { NoteObject } from "../models/note";
 const Container = styled(Box)`
 & > * {
@@ -63,28 +64,38 @@ function CreateNote({ addNotes }: { addNotes: (note: NoteObject) => void }) {
         setNote(defaultObj);
     }
     return (
-        <Container>
-            <InputBase onChange={onValueChange} value={note.title}  name="title" placeholder="Title" />
-            <Box component="span">30</Box>
-            <InputBase
-            value={note.details}
-                onChange={onValueChange}
-                name="details"
-                placeholder="Details"
-            />
-            <Box component="span">50</Box>
-            <InputBase
-         
-                onChange={onValueChange}
-                name="color"
-                type="color"
-                defaultValue={"#F5F5F5"}
-            />
-            <Button variant="outlined" onClick={onCreateNote}>
-                Create Note
-            </Button>
-            {error && <Error>{error}</Error>}
-        </Container>
+      <Container>
+        <InputBase
+          inputProps={{ maxLength: TITLE_LIMIT }}
+          onChange={onValueChange}
+          value={note.title}
+          name="title"
+          placeholder="Title"
+        />
+        <Box component="span">
+          {note.title.trim().length}/{TITLE_LIMIT}
+        </Box>
+        <InputBase
+          value={note.details}
+          onChange={onValueChange}
+          name="details"
+          placeholder="Details"
+          inputProps={{ maxLength: DETAILS_LIMIT }}
+        />
+        <Box component="span">
+          {note.details.trim().length}/{DETAILS_LIMIT}
+        </Box>
+        <InputBase
+          onChange={onValueChange}
+          name="color"
+          type="color"
+          defaultValue={"#F5F5F5"}
+        />
+        <Button variant="outlined" onClick={onCreateNote}>
+          Create Note
+        </Button>
+        {error && <Error>{error}</Error>}
+      </Container>
     );
 }
 
