@@ -9,12 +9,15 @@ function App() {
   const addNotes = (note : NoteObject) => {
     setNotes([note,...notes])
   }
+      function deleteNote(id:number){
+setNotes(notes => notes.filter(note => note.id!==id));
+    }
   return (
     <>
       <Header />
       <Box style={{ padding: 20 }}>
         <CreateNote addNotes={addNotes} />
-        <Notes notes={notes}/>
+        <Notes notes={notes} deleteNote={deleteNote}/>
       </Box>
     </>
   );

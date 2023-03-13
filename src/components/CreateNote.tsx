@@ -64,15 +64,17 @@ function CreateNote({ addNotes }: { addNotes: (note: NoteObject) => void }) {
     }
     return (
         <Container>
-            <InputBase onChange={onValueChange}  name="title" placeholder="Title" />
+            <InputBase onChange={onValueChange} value={note.title}  name="title" placeholder="Title" />
             <Box component="span">30</Box>
             <InputBase
+            value={note.details}
                 onChange={onValueChange}
                 name="details"
                 placeholder="Details"
             />
             <Box component="span">50</Box>
             <InputBase
+         
                 onChange={onValueChange}
                 name="color"
                 type="color"
