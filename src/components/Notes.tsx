@@ -1,8 +1,17 @@
-import React from 'react'
+import {Box,Typography} from "@mui/material"
+import { NoteObject } from "../models/note"
+import Note from "./Note"
 
-function Notes() {
+function Notes({notes}:{notes : NoteObject[]}) {
   return (
-    <div>Notes</div>
+  <Box>
+    <Typography variant="h5">Notes</Typography>
+    <Box>
+        {notes.map( note => (
+            <Note note={note}/>
+        ))}
+    </Box>
+  </Box>
   )
 }
 
